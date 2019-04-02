@@ -31,7 +31,7 @@ class HardShakeSimulation extends Simulation {
     .exec(
       kafka("request")
         // message to send
-        .send[String]("foo"))
+        .send[String]("{\"userid\": \"user1234\", \"machineid\": \"machine1234\", \"gesture\": \"gesture1234\"}"))
 
   setUp(
     scn
