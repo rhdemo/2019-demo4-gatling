@@ -15,4 +15,6 @@ RUN mkdir -p /results \
   && chgrp -R 0 /opt/gatling \
   && chmod -R g+rwX /opt/gatling
 
-CMD ["-sf", "src/test/gatling", "-s", "HardShakeSimulation", "-rf", "/results"]
+ENV SIMULATION=HardShakeSimulation
+
+ENTRYPOINT gatling.sh -sf src/test/gatling -rsf src/test/resources -s $SIMULATION -rf /results
