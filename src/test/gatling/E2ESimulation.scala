@@ -73,10 +73,7 @@ class E2ESimulation extends Simulation {
         jsonPath("$.gameId").saveAs("gameId")
       )
     val connect: ChainBuilder =
-      exec(http("GET root").get("/")
-
-      )
-        .exec(ws("Connect to /game-socket").connect("/game-socket")
+        exec(ws("Connect to /game-socket").connect("/game-socket")
           .onConnected(
             doIfOrElse(session => session("playerId").asOption[String].forall(_.isEmpty)) {
               exec(ws("Connect")
