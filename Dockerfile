@@ -17,4 +17,4 @@ RUN mkdir -p /results \
 
 ENV SIMULATION=HardShakeSimulation
 
-ENTRYPOINT gatling.sh -sf src/test/gatling -rsf src/test/resources -s $SIMULATION -rf /results
+ENTRYPOINT gatling.sh -sf src/test/gatling -rsf src/test/resources -s $SIMULATION -rf /results && echo 'Load test finished - CTRL+C to kill container' && while true; do sleep 1; done

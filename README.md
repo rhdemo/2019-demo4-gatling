@@ -1,8 +1,9 @@
 # Load tests
 
-There are two load tests implemented currently - `HardShakeSimulation`
-and `PredictionSimulation`. You can set the `SIMULATION` environment
-variable to pick which one to run. It defaults to `HardShakeSimulation`.
+There are three load tests implemented currently -
+`HardShakeSimulation`, `PredictionSimulation`, and
+`E2ESimulation`. You can set the `SIMULATION` environment variable to
+pick which one to run. It defaults to `HardShakeSimulation`.
 
 Other configuration is specific to each load test and passed as system
 properties in `JAVA_OPTS` like the examples below.
@@ -21,6 +22,12 @@ PredictionSimulation example:
 
 ```shell
 SIMULATION="PredictionSimulation" JAVA_OPTS="-Dhost=tf-serving-knative-demo.tf-demo.example.com -Dgateway=<your istio-ingressgateway address> -Dusers=5 -Dseconds=10" ./run-gatling.sh
+```
+
+E2ESimulation example:
+
+```shell
+SIMULATION="E2ESimulation" JAVA_OPTS="-Dhost=LIVE -Dusers=100 -Ddances=10" ./run-gatling.sh
 ```
 
 # Building the load test image
@@ -45,4 +52,15 @@ oc run load-test -it --rm=true --restart=Never --requests="cpu=2" --image=quay.i
 PredictionSimulation example:
 ```shell
 oc run load-test -it --rm=true --restart=Never --requests="cpu=2" --image=quay.io/bbrowning/demo2019-hard-shake-load-test --image-pull-policy=Always --env="SIMULATION=PredictionSimulation" --env="JAVA_OPTS=-Dhost=tf-serving-knative-demo.tf-demo.example.com -Dgateway=istio-ingressgateway.istio-system -Dusers=5 -Dseconds=10"
+```
+
+E2ESimulation example:
+```shell
+oc run load-test -it --rm=true --restart=Never --requests="cpu=2" --image=quay.io/bbrowning/demo2019-hard-shake-load-test --image-pull-policy=Always --env="SIMULATION=E2ESimulation" --env="JAVA_OPTS=-Dhost=LIVE -Dusers=50 -Ddances=15"
+
+# If you want to see the Gatling report, in another terminal:
+oc cp load-test:/results /tmp/e2eresults
+firefox /tmp/e2eresults/*/index.html
+
+# And then, in the original terminal, CTRL+C to kill the load-test pod
 ```
